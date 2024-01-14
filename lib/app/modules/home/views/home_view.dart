@@ -13,9 +13,15 @@ class HomeView extends GetView<HomeController> {
       length: 5,
       child: Scaffold(
         appBar: AppBar(
-          leading: const Icon(Icons.menu),
-          title: Text("Wallpapers"),
+          leading: IconButton(
+            onPressed: (){},
+              icon: const Icon(Icons.menu)),
+          title: const Text("Wallpapers"),
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: Obx(() => controller.isRefresh.value && !controller.isLoading.value
+            ?   LoadingAnimationWidget.staggeredDotsWave(color: Colors.white, size: 50)
+            : const SizedBox()),
         body: Obx(
           () => controller.isLoading.value
               ? Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.pinkAccent, size: 50))
@@ -53,21 +59,22 @@ class HomeView extends GetView<HomeController> {
                               children: [
                                 const Padding(
                                   padding: EdgeInsets.all(8.0),
-                                  child: Text('Most Popular'),
+                                  child: Text('Most Popular', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),),
                                 ),
-                                SizedBox(
-                                  height: 10,
+                                const SizedBox(
+                                  height: 5,
                                 ),
                                 Expanded(
                                   child: GridView.builder(
                                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3, // number of items in each row
-                                      mainAxisSpacing: 8.0, // spacing between rows
-                                      crossAxisSpacing: 8.0, // spacing between columns
+                                      crossAxisCount: 3,
+                                      mainAxisSpacing: 5.0,
+                                      crossAxisSpacing: 8.0,
                                       childAspectRatio: 0.5,
                                     ),
-                                    padding: const EdgeInsets.all(12.0), // padding around the grid
-                                    itemCount: controller.productList.length, // total number of items
+                                    controller: controller.scrollController,
+                                    padding: const EdgeInsets.all(12.0),
+                                    itemCount: controller.productList.length,
                                     itemBuilder: (context, index) {
                                       final model = controller.productList.elementAt(index);
                                       return CachedNetworkImage(
@@ -101,14 +108,10 @@ class HomeView extends GetView<HomeController> {
                                 childAspectRatio: 1.5,
                                 crossAxisSpacing: 8.0,
                               ),
-                              padding: const EdgeInsets.all(8.0), // padding around the grid
-                              itemCount: controller.categoryList.length, // total number of items
+                              padding: const EdgeInsets.all(8.0),
+                              itemCount: controller.categoryList.length,
                               itemBuilder: (context, index) {
                                 final model = controller.categoryList.elementAt(index);
-                                print(model.id);
-                                print(
-                                  '${ApiConfig.category}/1624186343.jpg',
-                                );
                                 return Stack(
                                   children: [
                                     CachedNetworkImage(

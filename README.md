@@ -1,6 +1,13 @@
 # coder71_task
 
 A new Flutter project.
+![product_view](https://github.com/Rassel98/coder71_task/assets/101389853/4328451a-1293-46eb-b8e3-62a2464f4908)
+![category_view](https://github.com/Rassel98/coder71_task/assets/101389853/48edd712-24b0-4d42-b131-adfedc5f7dec)
+
+![favorite](https://github.com/Rassel98/coder71_task/assets/101389853/a4f3e4e6-2d39-4eef-b89f-d22b81f92897)
+
+
+
 
 ## Getting Started
 

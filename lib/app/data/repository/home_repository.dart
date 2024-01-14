@@ -15,7 +15,6 @@ class HomeRepository extends HomeInterface {
   @override
   Future<ResponseModel?> getProductResponse(int page) async {
     var data = await BaseService.getData(api: "${ApiConfig.recentProducts}?page=$page");
-    print(data);
     return data != null ? ResponseModel.fromJson(data) : null;
   }
 }

@@ -49,7 +49,6 @@ class HomeController extends GetxController {
     var getResponse = await homeRepository.getAllCategory();
     if (getResponse != []) {
       _categoryList.value = getResponse;
-      print(categoryList.length);
     } else {
       print('dtata not comming');
     }
@@ -66,8 +65,8 @@ class HomeController extends GetxController {
     var getResponse = await homeRepository.getProductResponse(count);
     if (getResponse != null && getResponse.data != []) {
       total = getResponse.lastPage ?? 1;
+      print(getResponse.lastPage );
       _productList.addAll(getResponse.data!);
-      print(productList.length);
       isLoading.value = false;
       isRefresh(false);
     } else {

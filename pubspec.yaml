@@ -10,6 +10,7 @@ dependencies:
   get: 4.6.6
   http:
   cached_network_image:
+  loading_animation_widget: any
   flutter: 
     sdk: flutter
 

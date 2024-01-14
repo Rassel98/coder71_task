@@ -1,12 +1,31 @@
+import 'dart:math';
+import 'package:coder71_task/app/data/models/category_model.dart';
+import 'package:coder71_task/app/data/repository/home_repository.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../data/models/product_model.dart';
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
+  RxBool isLoading = true.obs;
+  RxBool isRefresh = false.obs;
+  int total = 1;
+  int count = 0;
+  ScrollController scrollController = ScrollController();
+  late HomeRepository homeRepository;
 
-  final count = 0.obs;
+  final _categoryList = <CategoryModel>[].obs;
+  List<CategoryModel> get categoryList => _categoryList;
+
+  final _productList = <ProductModel>[].obs;
+  List<ProductModel> get productList => _productList;
+
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
+    scrollController = ScrollController();
+    scrollController.addListener(_scrollListener);
+    await getAllProductList();
+    await getAllCategoryList();
   }
 
   @override
@@ -19,5 +38,41 @@ class HomeController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  _scrollListener() async {
+    if (scrollController.offset >= scrollController.position.maxScrollExtent && !scrollController.position.outOfRange) {
+      getAllProductList();
+    }
+  }
+
+  Future<void> getAllCategoryList() async {
+    var getResponse = await homeRepository.getAllCategory();
+    if (getResponse != []) {
+      _categoryList.value = getResponse;
+      log(categoryList.length);
+    } else {
+      print('dtata not comming');
+    }
+    isLoading(false);
+  }
+
+  Future<void> getAllProductList() async {
+    if (total >= count) {
+      isRefresh(true);
+      count++;
+    } else {
+      return;
+    }
+    var getResponse = await homeRepository.getProductResponse();
+    if (getResponse != null && getResponse.data != []) {
+      total = getResponse.lastPage ?? 1;
+      _productList.addAll(getResponse.data!);
+      log(productList.length);
+      isLoading.value = false;
+      isRefresh(false);
+    } else {
+      print('dtata not comming');
+    }
+    isLoading.value = false;
+    isRefresh(false);
+  }
 }

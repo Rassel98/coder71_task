@@ -22,10 +22,11 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
+    homeRepository=HomeRepository();
     scrollController = ScrollController();
     scrollController.addListener(_scrollListener);
-    await getAllProductList();
-    await getAllCategoryList();
+     await getAllProductList();
+     await getAllCategoryList();
   }
 
   @override
@@ -48,7 +49,7 @@ class HomeController extends GetxController {
     var getResponse = await homeRepository.getAllCategory();
     if (getResponse != []) {
       _categoryList.value = getResponse;
-      log(categoryList.length);
+      print(categoryList.length);
     } else {
       print('dtata not comming');
     }
@@ -62,11 +63,11 @@ class HomeController extends GetxController {
     } else {
       return;
     }
-    var getResponse = await homeRepository.getProductResponse();
+    var getResponse = await homeRepository.getProductResponse(count);
     if (getResponse != null && getResponse.data != []) {
       total = getResponse.lastPage ?? 1;
       _productList.addAll(getResponse.data!);
-      log(productList.length);
+      print(productList.length);
       isLoading.value = false;
       isRefresh(false);
     } else {

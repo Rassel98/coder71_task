@@ -4,7 +4,7 @@ import '../models/response_model.dart';
 
 abstract class HomeInterface {
   Future<List<CategoryModel>> getAllCategory();
-  Future<ResponseModel?> getProductResponse();
+  Future<ResponseModel?> getProductResponse(int page);
 
 
 }

@@ -8,10 +8,11 @@ class BaseService {
   static Future<dynamic> getData({
     required String api,
   }) async {
+    print(api);
     try {
       var response = await http.get(Uri.parse(api),);
-      log('GET status: ${response.statusCode}');
-      log('GET response: ${response.body}');
+      // log('GET status: ${response.statusCode}');
+      // log('GET response: ${response.body}');
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
       } else {

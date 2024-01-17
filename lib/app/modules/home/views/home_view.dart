@@ -9,18 +9,18 @@ class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    print(Get.height);
+    print(Get.width);
     return DefaultTabController(
-      length: 5,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            onPressed: (){},
-              icon: const Icon(Icons.menu)),
+          leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
           title: const Text("Wallpapers"),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Obx(() => controller.isRefresh.value && !controller.isLoading.value
-            ?   LoadingAnimationWidget.staggeredDotsWave(color: Colors.white, size: 50)
+            ? LoadingAnimationWidget.staggeredDotsWave(color: Colors.white, size: 50)
             : const SizedBox()),
         body: Obx(
           () => controller.isLoading.value
@@ -57,20 +57,25 @@ class HomeView extends GetView<HomeController> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Padding(
+                                 Padding(
                                   padding: EdgeInsets.all(8.0),
-                                  child: Text('Most Popular', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),),
+                                  child: Text(
+                                    'Most Popular',
+                                    style: TextStyle(fontSize: 22 * Get.textScaleFactor, fontWeight: FontWeight.w700),
+                                  ),
                                 ),
-                                const SizedBox(
-                                  height: 5,
+                                SizedBox(
+                                  height: Get.height * 0.00529,
                                 ),
                                 Expanded(
                                   child: GridView.builder(
-                                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 3,
                                       mainAxisSpacing: 5.0,
                                       crossAxisSpacing: 8.0,
-                                      childAspectRatio: 0.5,
+                                      // childAspectRatio: 0.5,
+                                      childAspectRatio: MediaQuery.of(context).size.width /
+                                          (MediaQuery.of(context).size.height / 1.4),
                                     ),
                                     controller: controller.scrollController,
                                     padding: const EdgeInsets.all(12.0),
@@ -79,8 +84,6 @@ class HomeView extends GetView<HomeController> {
                                       final model = controller.productList.elementAt(index);
                                       return CachedNetworkImage(
                                         fit: BoxFit.cover,
-                                        height: 130,
-                                        width: Get.width,
                                         imageUrl: '${ApiConfig.imageUrl}products/${model.photo.toString()}',
                                         imageBuilder: (context, imageProvider) => Container(
                                           height: 30,
@@ -92,8 +95,8 @@ class HomeView extends GetView<HomeController> {
                                           ),
                                         ),
                                         alignment: Alignment.center,
-                                        progressIndicatorBuilder: (context, url, downloadProgress) => Center(
-                                            child: CircularProgressIndicator(value: downloadProgress.progress)),
+                                        progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                            Center(child: CircularProgressIndicator(value: downloadProgress.progress)),
                                         errorWidget: (context, url, error) => const Icon(Icons.error),
                                       );
                                     },
@@ -102,10 +105,12 @@ class HomeView extends GetView<HomeController> {
                               ],
                             ),
                             GridView.builder(
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 mainAxisSpacing: 8.0,
-                                childAspectRatio: 1.5,
+                                // childAspectRatio: 1.5,
+                                childAspectRatio: MediaQuery.of(context).size.width /
+                                  (MediaQuery.of(context).size.height / 3.5),
                                 crossAxisSpacing: 8.0,
                               ),
                               padding: const EdgeInsets.all(8.0),
@@ -116,12 +121,8 @@ class HomeView extends GetView<HomeController> {
                                   children: [
                                     CachedNetworkImage(
                                       fit: BoxFit.cover,
-                                      height: 130,
-                                      width: Get.width,
                                       imageUrl: '${ApiConfig.imageUrl}collections/${model.coverPhoto.toString()}',
                                       imageBuilder: (context, imageProvider) => Container(
-                                        height: 30,
-                                        width: 30,
                                         decoration: BoxDecoration(
                                           shape: BoxShape.rectangle,
                                           borderRadius: BorderRadius.circular(8),
